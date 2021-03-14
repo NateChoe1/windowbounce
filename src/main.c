@@ -30,8 +30,11 @@ int main() {
 	}
 	int s = DefaultScreen(dpy);
 	Window w = XCreateSimpleWindow(dpy, RootWindow(dpy, s),
-	                               0, 0, 500, 500, 1,
-	                               BlackPixel(dpy, s), WhitePixel(dpy, s));
+	                               0, 0, 500, 500, 0,
+	                               0x00ffffff, 0x00ffffff);
+	Window ball = XCreateSimpleWindow(dpy, w,
+	                                  0, 0, 10, 10, 0,
+	                                  0x000000, 0x00000000);
 	XEvent e;
 	int inputMask = ExposureMask;
 	XSelectInput(dpy, w, inputMask);
@@ -43,6 +46,13 @@ int main() {
 			break;
 	}
 	//Wait until window creation.
+	XMapWindow(dpy, ball);
+
+	for (;;) {
+		XNextEvent(dpy, &e);
+		if (e.type == Expose)
+			break;
+	}
 	
 	int waitTime = 1000000/FRAME_RATE;
 	//The reason this isn't a macro is because division is really slow in computers.
@@ -60,8 +70,9 @@ int main() {
 	XSetLineAttributes(dpy, gc, 5, LineSolid, CapButt, JoinRound);
 	XMoveWindow(dpy, w, 200, 200);
 
+
 	for (;;) {
-		XClearWindow(dpy, w);
+		XClearWindow(dpy, ball);
 
 		Window root;
 		Window child;
@@ -75,7 +86,7 @@ int main() {
 		XGetGeometry(dpy, w, &root, &x, &y, &width, &height, &border, &depth);
 		XTranslateCoordinates(dpy, w, root, 0, 0, &x, &y, &child);
 
-		XDrawRectangle(dpy, w, gc, trueBallX - x - 3, trueBallY - y - 3, 6, 6);
+		XMoveWindow(dpy, ball, trueBallX - x - 5, trueBallY - y - 5);
 
 		if (frameCount > 1) {
 			if (trueBallX < x || trueBallX > x + width) {
