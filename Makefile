@@ -1,6 +1,6 @@
 FILES=src/main.c
 CFLAGS=-O3
-OUT=build/remake\ of\ remake
+OUT=build/windowbounce
 LIBS=-lX11
 
 windowbounce: $(FILES)

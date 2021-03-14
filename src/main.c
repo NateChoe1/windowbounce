@@ -77,23 +77,22 @@ int main() {
 
 		XDrawRectangle(dpy, w, gc, trueBallX - x - 3, trueBallY - y - 3, 6, 6);
 
-		ySpeed++;
 		if (frameCount > 1) {
 			if (trueBallX < x || trueBallX > x + width) {
 				xSpeed += x - lastX;
-				xSpeed *= -0.8;
+				xSpeed *= -0.9;
 				if (trueBallX < x)
-					trueBallX = x + 10;
+					trueBallX = x + 1;
 				if (trueBallX > x + width)
-					trueBallX = x + width - 10;
+					trueBallX = x + width - 1;
 			}
 			if (trueBallY < y || trueBallY > y + height) {
 				ySpeed += y - lastY;
-				ySpeed *= -0.8;
+				ySpeed *= -0.9;
 				if (trueBallY < y)
-					trueBallY = y + 10;
+					trueBallY = y + 1;
 				if (trueBallY > y + height)
-					trueBallY = y + height - 10;
+					trueBallY = y + height - 1;
 			}
 		}
 		trueBallX += xSpeed;
